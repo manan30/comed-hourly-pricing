@@ -34,14 +34,14 @@ async function getPrice() {
       const element = document.querySelector(".three-col > tbody");
       const children = Array.from(element.children);
 
-      const currentHour = new Date().getHours();
+      const currentHour = new Date().getHours() - 6;
       let currentPrice = children[currentHour].lastChild.textContent;
       if (currentPrice.toUpperCase() === N_A) {
         currentPrice = children[currentHour - 1].lastChild.textContent;
       }
       return { currentPrice, currentHour, children };
     });
-    console.log({ price, rest });
+    // console.log({ price, rest });
     lastAccess.price = price;
     lastAccess.time = new Date().toLocaleString();
     console.log(lastAccess);
