@@ -29,7 +29,7 @@ async function getPrice() {
       waitUntil: "domcontentloaded",
     });
     await paused(3000);
-    const price = await page.evaluate(() => {
+    const { currentPrice: price, ...rest } = await page.evaluate(() => {
       const N_A = "N/A";
       const element = document.querySelector(".three-col > tbody");
       const children = Array.from(element.children);
@@ -39,8 +39,9 @@ async function getPrice() {
       if (currentPrice.toUpperCase() === N_A) {
         currentPrice = children[currentHour - 1].lastChild.textContent;
       }
-      return currentPrice;
+      return { currentPrice, currentHour, children };
     });
+    console.log({ price, rest });
     lastAccess.price = price;
     lastAccess.time = new Date().toLocaleString();
     console.log(lastAccess);
