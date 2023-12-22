@@ -28,7 +28,7 @@ async function getPrice() {
 
       const currentHour = new Date().getHours();
       let currentPrice = children[currentHour].lastChild.textContent;
-      if (currentPrice.toUpperCase === "N/A") {
+      if (currentPrice.toUpperCase() === "N/A") {
         currentPrice = children[currentHour - 1].lastChild.textContent;
       }
       return currentPrice;
