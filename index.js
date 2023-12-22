@@ -30,6 +30,7 @@ async function getPrice() {
     });
     await paused(3000);
     const price = await page.evaluate(() => {
+      const N_A = "N/A";
       const element = document.querySelector(".three-col > tbody");
       const children = Array.from(element.children);
 
