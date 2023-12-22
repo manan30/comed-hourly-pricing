@@ -38,7 +38,7 @@ async function getPrice() {
     return price;
   } catch (error) {
     console.error(error);
-    console.log("Unable to get price");
+    return "Unable to get price";
   }
 }
 
