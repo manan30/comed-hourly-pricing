@@ -2,6 +2,13 @@ const puppeteer = require("puppeteer");
 const { paused } = require("paused");
 const { Telegram } = require("puregram");
 
+const UNABLE_TO_GET_PRICE = "Unable to get price";
+const N_A = "N/A";
+
+function emptyString(value) {
+  return value && value.trim() === "";
+}
+
 const telegram = Telegram.fromToken(process.env.TELEGRAM_BOT_TOKEN);
 
 const lastAccess = {
@@ -13,7 +20,7 @@ async function getPrice() {
   try {
     console.log("Scraping price");
     const browser = await puppeteer.launch({
-      headless: true,
+      headless: "new",
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       ignoreDefaultArgs: ["--disable-extensions"],
     });
@@ -28,7 +35,7 @@ async function getPrice() {
 
       const currentHour = new Date().getHours();
       let currentPrice = children[currentHour].lastChild.textContent;
-      if (currentPrice.toUpperCase() === "N/A") {
+      if (currentPrice.toUpperCase() === N_A) {
         currentPrice = children[currentHour - 1].lastChild.textContent;
       }
       return currentPrice;
@@ -40,7 +47,7 @@ async function getPrice() {
     return price;
   } catch (error) {
     console.error(error);
-    return "Unable to get price";
+    return UNABLE_TO_GET_PRICE;
   }
 }
 
@@ -54,7 +61,12 @@ async function start() {
     }
 
     let price = "";
-    if (lastAccess.time && lastAccess.price) {
+    if (
+      !emptyString(lastAccess.time) &&
+      !emptyString(lastAccess.price) &&
+      lastAccess.price !== UNABLE_TO_GET_PRICE &&
+      lastAccess.price !== N_A
+    ) {
       const lastAccessTime = new Date(lastAccess.time).getTime();
       const currentTime = new Date().getTime();
       if (currentTime - lastAccessTime < 900000) {
