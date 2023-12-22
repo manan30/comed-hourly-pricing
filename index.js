@@ -14,6 +14,8 @@ async function getPrice() {
     console.log("Scraping price");
     const browser = await puppeteer.launch({
       headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      ignoreDefaultArgs: ["--disable-extensions"],
     });
     const page = await browser.newPage();
     await page.goto("https://hourlypricing.comed.com/pricing-table-today/", {
