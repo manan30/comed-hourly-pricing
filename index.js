@@ -43,7 +43,7 @@ async function getPrice() {
       }
       return { currentPrice, currentHour, children };
     });
-    console.log({ price, rest });
+    // console.log({ price, rest });
     lastAccess.price = price;
     lastAccess.time = new Date().toLocaleString();
     console.log(lastAccess);
