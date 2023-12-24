@@ -43,7 +43,7 @@ async function getPrice() {
       }
       return { currentPrice, currentHour, children };
     });
-    // console.log({ price, rest });
+    console.log({ price, rest });
     lastAccess.price = price;
     lastAccess.time = new Date().toLocaleString();
     console.log(lastAccess);
@@ -59,7 +59,7 @@ async function start() {
   telegram.updates.on("message", async (context) => {
     if (context.text.toLowerCase() !== "/price") {
       context.reply(
-        "Please only text the word 'price' to get the current price"
+        "Please only use the '/price' command to get the current price"
       );
       return;
     }
