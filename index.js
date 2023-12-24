@@ -34,7 +34,9 @@ async function getPrice() {
       const element = document.querySelector(".three-col > tbody");
       const children = Array.from(element.children);
 
-      const currentHour = new Date().getHours() - 6;
+      let currentHour = new Date().getUTCHours();
+      currentHour = (currentHour - 6 + 24) % 24;
+
       let currentPrice = children[currentHour].lastChild.textContent;
       if (currentPrice.toUpperCase() === N_A) {
         currentPrice = children[currentHour - 1].lastChild.textContent;
@@ -55,7 +57,7 @@ async function getPrice() {
 
 async function start() {
   telegram.updates.on("message", async (context) => {
-    if (context.text.toLowerCase() !== "price") {
+    if (context.text.toLowerCase() !== "/price") {
       context.reply(
         "Please only text the word 'price' to get the current price"
       );
