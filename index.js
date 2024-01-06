@@ -97,7 +97,7 @@ async function getPrice() {
 
 // start();
 
-const CRON_TIME = "* * * * *";
+const CRON_TIME = "15 * * * *";
 
 const task = cron.schedule(
   CRON_TIME, // every 15 minutes past the hour,
