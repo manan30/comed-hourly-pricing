@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node-cron": "^3.0.3",
     "paused": "^1.1.1",
     "puppeteer": "^21.6.1",
     "puregram": "^2.23.1"
