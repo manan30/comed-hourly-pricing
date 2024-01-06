@@ -123,7 +123,7 @@ const tgTest = cron.schedule(
     try {
       // const updates = await telegram.api.getUpdates();
       // console.log(JSON.stringify(updates));
-      await telegram.bot({
+      await telegram.api.sendMessage({
         chat_id: "-4084630293",
         text: "hello",
       });
