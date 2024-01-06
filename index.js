@@ -98,6 +98,7 @@ async function getPrice() {
 // start();
 
 const CRON_TIME = "15 * * * *";
+const CHAT_ID = "-4084630293";
 
 const task = cron.schedule(
   CRON_TIME, // every 15 minutes past the hour,
@@ -105,7 +106,7 @@ const task = cron.schedule(
     try {
       const price = await getPrice();
       await telegram.api.sendMessage({
-        chat_id: "@comed_hpa_bot",
+        chat_id: CHAT_ID,
         text: price,
       });
     } catch (error) {
@@ -116,22 +117,3 @@ const task = cron.schedule(
 );
 
 task.start();
-
-const tgTest = cron.schedule(
-  "* * * * *",
-  async () => {
-    try {
-      // const updates = await telegram.api.getUpdates();
-      // console.log(JSON.stringify(updates));
-      await telegram.api.sendMessage({
-        chat_id: "-4084630293",
-        text: "hello",
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  { recoverMissedExecutions: true, timezone: "America/Chicago" }
-);
-
-tgTest.start();
