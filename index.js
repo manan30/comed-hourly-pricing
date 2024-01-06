@@ -123,13 +123,12 @@ const tgTest = cron.schedule(
     try {
       const updates = await telegram.api.getUpdates();
       console.log(updates);
-    //   await telegram.bot({
-    //     chat_id: "@comed_hpa_bot",
-    //     text: "hello",
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
+      //   await telegram.bot({
+      //     chat_id: "@comed_hpa_bot",
+      //     text: "hello",
+      //   });
+    } catch (error) {
+      console.error(error);
     }
   },
   { recoverMissedExecutions: true, timezone: "America/Chicago" }
