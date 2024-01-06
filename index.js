@@ -62,40 +62,40 @@ async function getPrice() {
   }
 }
 
-// async function start() {
-//   telegram.updates.on("message", async (context) => {
-//     if (context.text.toLowerCase() !== "/price") {
-//       context.reply(
-//         "Please only use the '/price' command to get the current price"
-//       );
-//       return;
-//     }
+async function start() {
+  telegram.updates.on("message", async (context) => {
+    if (context.text.toLowerCase() !== "/price") {
+      context.reply(
+        "Please only use the '/price' command to get the current price"
+      );
+      return;
+    }
 
-//     let price = "";
-//     if (
-//       !emptyString(lastAccess.time) &&
-//       !emptyString(lastAccess.price) &&
-//       lastAccess.price !== UNABLE_TO_GET_PRICE &&
-//       lastAccess.price !== N_A
-//     ) {
-//       const lastAccessTime = new Date(lastAccess.time).getTime();
-//       const currentTime = new Date().getTime();
-//       if (currentTime - lastAccessTime < 900000) {
-//         price = lastAccess.price;
-//       } else {
-//         price = await getPrice();
-//       }
-//     } else {
-//       price = await getPrice();
-//     }
-//     context.reply(`${price}`);
-//   });
-//   const updates = await telegram.updates.dropPendingUpdates();
-//   console.log(`Dropped ${updates} pending updates`);
-//   telegram.updates.startPolling();
-// }
+    let price = "";
+    if (
+      !emptyString(lastAccess.time) &&
+      !emptyString(lastAccess.price) &&
+      lastAccess.price !== UNABLE_TO_GET_PRICE &&
+      lastAccess.price !== N_A
+    ) {
+      const lastAccessTime = new Date(lastAccess.time).getTime();
+      const currentTime = new Date().getTime();
+      if (currentTime - lastAccessTime < 900000) {
+        price = lastAccess.price;
+      } else {
+        price = await getPrice();
+      }
+    } else {
+      price = await getPrice();
+    }
+    context.reply(`${price}`);
+  });
+  const updates = await telegram.updates.dropPendingUpdates();
+  console.log(`Dropped ${updates} pending updates`);
+  telegram.updates.startPolling();
+}
 
-// start();
+start();
 
 const CRON_TIME = "15 * * * *";
 const CHAT_ID = "-4084630293";
