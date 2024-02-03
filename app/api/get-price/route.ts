@@ -1,11 +1,17 @@
 import { Telegram } from "puregram";
 import { getPrice } from "./get-price";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const CHAT_ID = "-4084630293";
 const telegram = Telegram.fromToken(process.env.TELEGRAM_BOT_TOKEN!);
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (
+    req.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const price = await getPrice();
     await telegram.api.sendMessage({
