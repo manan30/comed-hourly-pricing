@@ -1,26 +1,36 @@
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
 import { paused } from "paused";
+import chromium from "@sparticuz/chromium-min";
 
 const UNABLE_TO_GET_PRICE = "Unable to get price";
 const N_A = "N/A";
-
-function emptyString(value: string) {
-  return value && value.trim() === "";
-}
 
 const lastAccess = {
   price: "",
   time: "",
 };
 
+async function getBrowser() {
+  return puppeteer.launch({
+    args: [
+      ...chromium.args,
+      "--hide-scrollbars",
+      "--disable-web-security",
+      "--no-sandbox",
+    ],
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(
+      `https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar`
+    ),
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+  });
+}
+
 export async function getPrice() {
   try {
     console.log("Scraping price");
-    const browser = await puppeteer.launch({
-      headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      ignoreDefaultArgs: ["--disable-extensions"],
-    });
+    const browser = await getBrowser();
     const page = await browser.newPage();
     await page.goto("https://hourlypricing.comed.com/pricing-table-today/", {
       waitUntil: "domcontentloaded",
