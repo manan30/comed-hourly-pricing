@@ -8,10 +8,12 @@ const telegram = Telegram.fromToken(process.env.TELEGRAM_BOT_TOKEN!);
 export async function GET(req: NextRequest) {
   try {
     const price = await getPrice();
-    await telegram.api.sendMessage({
-      chat_id: CHAT_ID,
-      text: price,
-    });
+    if (price) {
+      await telegram.api.sendMessage({
+        chat_id: CHAT_ID,
+        text: price,
+      });
+    }
     return NextResponse.json({ message: "Message sent" });
   } catch (error) {
     console.error(error);

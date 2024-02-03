@@ -10,6 +10,8 @@ const lastAccess = {
   time: "",
 };
 
+let isFetching = false;
+
 async function getBrowser() {
   return puppeteer.launch({
     args: [
@@ -29,6 +31,10 @@ async function getBrowser() {
 
 export async function getPrice() {
   try {
+    if (isFetching) {
+      return false;
+    }
+    isFetching = true;
     console.log("Scraping price");
     const browser = await getBrowser();
     const page = await browser.newPage();
@@ -64,6 +70,8 @@ export async function getPrice() {
   } catch (error) {
     console.error(error);
     return UNABLE_TO_GET_PRICE;
+  } finally {
+    isFetching = false;
   }
 }
 
