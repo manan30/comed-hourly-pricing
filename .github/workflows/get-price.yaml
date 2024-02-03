@@ -1,0 +1,14 @@
+name: Get Price Action
+
+on:
+  schedule:
+    - cron: "32 * * * *"
+
+jobs:
+  getPrice:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Price
+        run: |
+          curl https://chp.mananjoshi.me/api/get-price | jq
+        shell: bash
