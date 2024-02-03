@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/get-price",
-      "schedule": "50 * * * *"
+      "schedule": "55 * * * *"
     }
   ]
 }
