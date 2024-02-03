@@ -2,7 +2,7 @@ name: Get Price Action
 
 on:
   schedule:
-    - cron: "32 * * * *"
+    - cron: "38 * * * *"
 
 jobs:
   getPrice:
