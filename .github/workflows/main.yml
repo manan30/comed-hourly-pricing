@@ -1,30 +1,21 @@
-name: Get Price Action
+name: Deploy to cloudflare workers
 
 on:
-  schedule:
-    - cron: "15 * * * *"
+  push:
+    branches:
+      - main
 
 jobs:
-  getPrice:
+  deploy:
     runs-on: ubuntu-latest
+    name: Deploy
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20.x"
-          cache: "pnpm"
+      - uses: actions/checkout@v3
       - name: Install pnpm
-        run: npm install -g pnpm
-      - name: Cache pnpm modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-      - name: Install packages
+        run: npm i -g pnpm
+      - name: Install dependencies
         run: pnpm install
-      - name: Run fetch-price script
-        run: pnpm run fetch-price
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
