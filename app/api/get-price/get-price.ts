@@ -58,34 +58,40 @@ export async function getPrice() {
       const element = document.querySelector(".three-col > tbody");
       const children = Array.from(element?.children ?? []);
 
-      const getCentralTimeOffset = () => {
-        const stdTimezoneOffset = () => {
-          var jan = new Date(0, 1);
-          var jul = new Date(6, 1);
-          return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-        };
+      // const getCentralTimeOffset = () => {
+      //   const stdTimezoneOffset = () => {
+      //     var jan = new Date(0, 1);
+      //     var jul = new Date(6, 1);
+      //     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+      //   };
 
-        var today = new Date();
+      //   var today = new Date();
 
-        const isDstObserved = (today: Date) => {
-          return today.getTimezoneOffset() < stdTimezoneOffset();
-        };
+      //   const isDstObserved = (today: Date) => {
+      //     return today.getTimezoneOffset() < stdTimezoneOffset();
+      //   };
 
-        if (isDstObserved(today)) {
-          return -5;
-        } else {
-          return -6;
-        }
-      };
+      //   if (isDstObserved(today)) {
+      //     return -5;
+      //   } else {
+      //     return -6;
+      //   }
+      // };
 
-      const date = new Date();
-      const localTime = date.getTime();
-      const localOffset = date.getTimezoneOffset() * 60 * 1000;
-      const utcTime = localTime + localOffset;
-      const centralTimeOffset = getCentralTimeOffset();
-      const chicago = utcTime + 60 * 60 * 1000 * centralTimeOffset;
-      const chicagoDate = new Date(chicago);
-      let currentHour = chicagoDate.getHours();
+      // const date = new Date();
+      // const localTime = date.getTime();
+      // const localOffset = date.getTimezoneOffset() * 60 * 1000;
+      // const utcTime = localTime + localOffset;
+      // const centralTimeOffset = getCentralTimeOffset();
+      // const chicago = utcTime + 60 * 60 * 1000 * centralTimeOffset;
+      // const chicagoDate = new Date(chicago);
+      let currentHour = Number(
+        Intl.DateTimeFormat("en-US", {
+          hour: "numeric",
+          hour12: false,
+          timeZone: "America/Chicago",
+        }).format(Date.now())
+      );
       currentHour = (currentHour + 24) % 24;
 
       let hour = children[currentHour]?.firstChild?.textContent;
