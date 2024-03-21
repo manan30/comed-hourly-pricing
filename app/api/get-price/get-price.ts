@@ -98,7 +98,7 @@ export async function getPrice() {
     });
     lastAccess.price = price;
     lastAccess.time = new Date().toLocaleString();
-    console.log(lastAccess);
+    console.log(lastAccess, rest);
     await browser.close();
     return `${hour} - ${price}`;
   } catch (error) {
