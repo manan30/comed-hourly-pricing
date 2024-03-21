@@ -29,6 +29,26 @@ async function getBrowser() {
   });
 }
 
+const getCentralTimeOffset = () => {
+  const stdTimezoneOffset = () => {
+    var jan = new Date(0, 1);
+    var jul = new Date(6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+  };
+
+  var today = new Date();
+
+  const isDstObserved = (today: Date) => {
+    return today.getTimezoneOffset() < stdTimezoneOffset();
+  };
+
+  if (isDstObserved(today)) {
+    return -5;
+  } else {
+    return -6;
+  }
+};
+
 export async function getPrice() {
   try {
     if (isFetching) {
@@ -51,7 +71,14 @@ export async function getPrice() {
       const element = document.querySelector(".three-col > tbody");
       const children = Array.from(element?.children ?? []);
 
-      let currentHour = new Date().getUTCHours();
+      const date = new Date();
+      const localTime = date.getTime();
+      const localOffset = date.getTimezoneOffset() * 60 * 1000;
+      const utcTime = localTime + localOffset;
+      const centralTimeOffset = getCentralTimeOffset();
+      const chicago = utcTime + 60 * 60 * 1000 * centralTimeOffset;
+      const chicagoDate = new Date(chicago);
+      let currentHour = chicagoDate.getHours();
       currentHour = (currentHour - 6 + 24) % 24;
 
       let hour = children[currentHour]?.firstChild?.textContent;
